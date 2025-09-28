@@ -104,6 +104,62 @@ interface QuickAction {
   userLevels: string[];
 }
 
+interface BackupConfig {
+  id: string;
+  name: string;
+  type: 'full' | 'incremental' | 'differential';
+  schedule: 'daily' | 'weekly' | 'monthly' | 'custom';
+  status: 'active' | 'paused' | 'error';
+  lastBackup: string;
+  nextBackup: string;
+  size: string;
+  retention: number;
+  location: string;
+}
+
+interface RestorePoint {
+  id: string;
+  name: string;
+  type: 'manual' | 'automatic' | 'critical';
+  createdAt: string;
+  size: string;
+  integrity: 'verified' | 'corrupted' | 'unknown';
+  description: string;
+  dataTypes: string[];
+}
+
+interface SecurityAudit {
+  id: string;
+  title: string;
+  type: 'access_control' | 'data_integrity' | 'system_health' | 'compliance';
+  status: 'completed' | 'running' | 'failed' | 'scheduled';
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  startTime: string;
+  endTime?: string;
+  findings: {
+    issues: number;
+    warnings: number;
+    passed: number;
+  };
+  recommendations: string[];
+}
+
+interface SystemIntegrity {
+  id: string;
+  component: string;
+  status: 'healthy' | 'warning' | 'critical' | 'offline';
+  lastCheck: string;
+  uptime: string;
+  performance: number;
+  issues: string[];
+  metrics: {
+    cpu: number;
+    memory: number;
+    disk: number;
+    network: number;
+  };
+}
+
 const Index = () => {
   const [activeTab, setActiveTab] = useState('monitoring');
   const [isMobile, setIsMobile] = useState(false);
@@ -335,6 +391,231 @@ const Index = () => {
     }
   ]);
 
+  const [backupConfigs] = useState<BackupConfig[]>([
+    {
+      id: '1',
+      name: 'Полный бэкап системы',
+      type: 'full',
+      schedule: 'weekly',
+      status: 'active',
+      lastBackup: '2024-01-28 02:00:00',
+      nextBackup: '2024-02-04 02:00:00',
+      size: '2.4 GB',
+      retention: 12,
+      location: 'backup-server-01/full'
+    },
+    {
+      id: '2',
+      name: 'Инкрементальный бэкап',
+      type: 'incremental',
+      schedule: 'daily',
+      status: 'active',
+      lastBackup: '2024-01-28 23:00:00',
+      nextBackup: '2024-01-29 23:00:00',
+      size: '156 MB',
+      retention: 30,
+      location: 'backup-server-01/incremental'
+    },
+    {
+      id: '3',
+      name: 'Критические данные',
+      type: 'differential',
+      schedule: 'daily',
+      status: 'active',
+      lastBackup: '2024-01-28 18:00:00',
+      nextBackup: '2024-01-29 18:00:00',
+      size: '245 MB',
+      retention: 60,
+      location: 'backup-server-02/critical'
+    },
+    {
+      id: '4',
+      name: 'Архив отчетов',
+      type: 'full',
+      schedule: 'monthly',
+      status: 'paused',
+      lastBackup: '2024-01-01 03:00:00',
+      nextBackup: '2024-02-01 03:00:00',
+      size: '890 MB',
+      retention: 36,
+      location: 'archive-server/reports'
+    }
+  ]);
+
+  const [restorePoints] = useState<RestorePoint[]>([
+    {
+      id: '1',
+      name: 'Система до обновления ML',
+      type: 'manual',
+      createdAt: '2024-01-27 14:30:00',
+      size: '2.1 GB',
+      integrity: 'verified',
+      description: 'Точка восстановления перед внедрением новой ML модели',
+      dataTypes: ['sensors', 'ml_models', 'user_settings', 'alerts']
+    },
+    {
+      id: '2',
+      name: 'Автобэкап 28.01.2024',
+      type: 'automatic',
+      createdAt: '2024-01-28 02:00:15',
+      size: '2.4 GB',
+      integrity: 'verified',
+      description: 'Еженедельный автоматический бэкап системы',
+      dataTypes: ['all_data', 'configurations', 'logs', 'reports']
+    },
+    {
+      id: '3',
+      name: 'Критический инцидент',
+      type: 'critical',
+      createdAt: '2024-01-28 14:15:42',
+      size: '1.8 GB',
+      integrity: 'verified',
+      description: 'Состояние системы на момент критического алерта',
+      dataTypes: ['sensors', 'alerts', 'user_actions', 'system_logs']
+    },
+    {
+      id: '4',
+      name: 'Поврежденный бэкап',
+      type: 'automatic',
+      createdAt: '2024-01-26 02:00:00',
+      size: '2.2 GB',
+      integrity: 'corrupted',
+      description: 'Бэкап с ошибками целостности данных',
+      dataTypes: ['partial_data']
+    }
+  ]);
+
+  const [securityAudits] = useState<SecurityAudit[]>([
+    {
+      id: '1',
+      title: 'Аудит системы доступа',
+      type: 'access_control',
+      status: 'completed',
+      severity: 'medium',
+      startTime: '2024-01-28 09:00:00',
+      endTime: '2024-01-28 09:45:23',
+      findings: {
+        issues: 2,
+        warnings: 7,
+        passed: 48
+      },
+      recommendations: [
+        'Обновить пароли для служебных аккаунтов',
+        'Включить двухфакторную аутентификацию для администраторов',
+        'Настроить автоматическую блокировку неактивных сессий'
+      ]
+    },
+    {
+      id: '2',
+      title: 'Проверка целостности данных',
+      type: 'data_integrity',
+      status: 'completed',
+      severity: 'low',
+      startTime: '2024-01-28 10:30:00',
+      endTime: '2024-01-28 11:15:12',
+      findings: {
+        issues: 0,
+        warnings: 3,
+        passed: 156
+      },
+      recommendations: [
+        'Настроить автоматическую проверку контрольных сумм',
+        'Увеличить частоту проверки критических датчиков'
+      ]
+    },
+    {
+      id: '3',
+      title: 'Аудит соответствия требованиям',
+      type: 'compliance',
+      status: 'running',
+      severity: 'high',
+      startTime: '2024-01-28 14:00:00',
+      findings: {
+        issues: 0,
+        warnings: 0,
+        passed: 23
+      },
+      recommendations: []
+    },
+    {
+      id: '4',
+      title: 'Проверка работоспособности',
+      type: 'system_health',
+      status: 'scheduled',
+      severity: 'low',
+      startTime: '2024-01-29 02:00:00',
+      findings: {
+        issues: 0,
+        warnings: 0,
+        passed: 0
+      },
+      recommendations: []
+    }
+  ]);
+
+  const [systemIntegrity] = useState<SystemIntegrity[]>([
+    {
+      id: '1',
+      component: 'База данных',
+      status: 'healthy',
+      lastCheck: '2024-01-28 14:30:00',
+      uptime: '99.97%',
+      performance: 94,
+      issues: [],
+      metrics: {
+        cpu: 45,
+        memory: 62,
+        disk: 78,
+        network: 23
+      }
+    },
+    {
+      id: '2',
+      component: 'ML сервис',
+      status: 'warning',
+      lastCheck: '2024-01-28 14:29:45',
+      uptime: '99.89%',
+      performance: 87,
+      issues: ['Высокое потребление памяти', 'Периодические задержки обработки'],
+      metrics: {
+        cpu: 78,
+        memory: 89,
+        disk: 45,
+        network: 67
+      }
+    },
+    {
+      id: '3',
+      component: 'Система уведомлений',
+      status: 'healthy',
+      lastCheck: '2024-01-28 14:28:12',
+      uptime: '99.95%',
+      performance: 98,
+      issues: [],
+      metrics: {
+        cpu: 12,
+        memory: 34,
+        disk: 23,
+        network: 45
+      }
+    },
+    {
+      id: '4',
+      component: 'Интеграции 1С',
+      status: 'critical',
+      lastCheck: '2024-01-28 14:15:00',
+      uptime: '89.12%',
+      performance: 45,
+      issues: ['Потеря соединения', 'Ошибки синхронизации', 'Превышение тайм-аута'],
+      metrics: {
+        cpu: 23,
+        memory: 45,
+        disk: 67,
+        network: 12
+      }
+    }
+  ]);
+
   const [userRoles] = useState<UserRole[]>([
     {
       id: '1',
@@ -507,6 +788,60 @@ const Index = () => {
   const availableActions = quickActions.filter(action => 
     action.userLevels.includes(currentUser.role.level)
   );
+
+  const getBackupStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'text-green-600 bg-green-100';
+      case 'paused': return 'text-yellow-600 bg-yellow-100';
+      case 'error': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getIntegrityColor = (integrity: string) => {
+    switch (integrity) {
+      case 'verified': return 'text-green-600 bg-green-100';
+      case 'corrupted': return 'text-red-600 bg-red-100';
+      case 'unknown': return 'text-yellow-600 bg-yellow-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getAuditStatusColor = (status: string) => {
+    switch (status) {
+      case 'completed': return 'text-green-600 bg-green-100';
+      case 'running': return 'text-blue-600 bg-blue-100';
+      case 'failed': return 'text-red-600 bg-red-100';
+      case 'scheduled': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getSystemStatusColor = (status: string) => {
+    switch (status) {
+      case 'healthy': return 'text-green-600 bg-green-100';
+      case 'warning': return 'text-yellow-600 bg-yellow-100';
+      case 'critical': return 'text-red-600 bg-red-100';
+      case 'offline': return 'text-gray-600 bg-gray-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getTotalBackupSize = () => {
+    const sizes = backupConfigs.map(config => {
+      const sizeStr = config.size;
+      const value = parseFloat(sizeStr);
+      const unit = sizeStr.includes('GB') ? 1024 : 1;
+      return value * unit;
+    });
+    const totalMB = sizes.reduce((acc, size) => acc + size, 0);
+    return totalMB > 1024 ? `${(totalMB / 1024).toFixed(1)} GB` : `${totalMB.toFixed(0)} MB`;
+  };
+
+  const getSystemHealthScore = () => {
+    const healthyCount = systemIntegrity.filter(s => s.status === 'healthy').length;
+    return Math.round((healthyCount / systemIntegrity.length) * 100);
+  };
 
   const activeAlerts = autoAlerts.filter(alert => alert.status === 'active').length;
   const criticalSensors = realTimeData.filter(sensor => sensor.status === 'critical').length;
@@ -790,6 +1125,18 @@ const Index = () => {
               <TabsTrigger value="roles" className="flex items-center space-x-1">
                 <Icon name="Users" className="h-4 w-4" />
                 <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Роли</span>
+              </TabsTrigger>
+            )}
+            {hasPermission('system_config') && (
+              <TabsTrigger value="backup" className="flex items-center space-x-1">
+                <Icon name="HardDrive" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Бэкапы</span>
+              </TabsTrigger>
+            )}
+            {hasPermission('view_all') && (
+              <TabsTrigger value="audit" className="flex items-center space-x-1">
+                <Icon name="ShieldCheck" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Аудит</span>
               </TabsTrigger>
             )}
           </TabsList>
@@ -1272,6 +1619,292 @@ const Index = () => {
                   </div>
                 </CardContent>
               </Card>
+            </div>
+          </TabsContent>
+
+          {/* Backup & Recovery */}
+          <TabsContent value="backup" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Резервное копирование и восстановление
+              </h2>
+              <div className="flex space-x-2">
+                <Button variant="outline">
+                  <Icon name="Plus" className="h-4 w-4 mr-2" />
+                  Создать бэкап
+                </Button>
+                <Button>
+                  <Icon name="RotateCcw" className="h-4 w-4 mr-2" />
+                  Восстановить
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Backup Configurations */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Конфигурации бэкапов</h3>
+                  <div className="text-sm text-gray-600">
+                    Общий размер: {getTotalBackupSize()}
+                  </div>
+                </div>
+                {backupConfigs.map((config) => (
+                  <Card key={config.id}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Icon name={
+                            config.type === 'full' ? 'Database' :
+                            config.type === 'incremental' ? 'GitBranch' : 'GitMerge'
+                          } className="h-5 w-5 text-primary" />
+                          <CardTitle className="text-base">{config.name}</CardTitle>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Badge className={getBackupStatusColor(config.status)}>
+                            {config.status}
+                          </Badge>
+                          <Badge variant="outline" className="capitalize">
+                            {config.type}
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Расписание:</span>
+                          <span className="font-medium">{config.schedule}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Последний:</span>
+                          <span>{config.lastBackup}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Следующий:</span>
+                          <span>{config.nextBackup}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Размер:</span>
+                          <span className="font-medium">{config.size}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Хранение:</span>
+                          <span>{config.retention} дней</span>
+                        </div>
+                      </div>
+                      <div className="flex justify-end space-x-2 mt-4">
+                        <Button variant="outline" size="sm">
+                          <Icon name="Settings" className="h-4 w-4 mr-2" />
+                          Настроить
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Icon name="Play" className="h-4 w-4 mr-2" />
+                          Запустить
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+
+              {/* Restore Points */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Точки восстановления</h3>
+                {restorePoints.map((point) => (
+                  <Card key={point.id}>
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                          <Icon name={
+                            point.type === 'manual' ? 'User' :
+                            point.type === 'automatic' ? 'Clock' : 'AlertTriangle'
+                          } className="h-5 w-5 text-primary" />
+                          <CardTitle className="text-base">{point.name}</CardTitle>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Badge className={getIntegrityColor(point.integrity)}>
+                            {point.integrity}
+                          </Badge>
+                          <Badge variant="outline" className="capitalize">
+                            {point.type}
+                          </Badge>
+                        </div>
+                      </div>
+                      <CardDescription className="text-sm">
+                        {point.description}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Создан:</span>
+                          <span>{point.createdAt}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Размер:</span>
+                          <span className="font-medium">{point.size}</span>
+                        </div>
+                        <div>
+                          <span className="text-sm text-gray-600">Типы данных:</span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {point.dataTypes.map((type, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {type}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex justify-end space-x-2 mt-4">
+                        <Button variant="outline" size="sm">
+                          <Icon name="Eye" className="h-4 w-4 mr-2" />
+                          Подробности
+                        </Button>
+                        {point.integrity === 'verified' && (
+                          <Button size="sm">
+                            <Icon name="RotateCcw" className="h-4 w-4 mr-2" />
+                            Восстановить
+                          </Button>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Security Audit */}
+          <TabsContent value="audit" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Аудит безопасности и мониторинг целостности
+              </h2>
+              <div className="flex space-x-2">
+                <Button variant="outline">
+                  <Icon name="Play" className="h-4 w-4 mr-2" />
+                  Запустить аудит
+                </Button>
+                <Button>
+                  <Icon name="FileText" className="h-4 w-4 mr-2" />
+                  Отчет
+                </Button>
+              </div>
+            </div>
+
+            {/* System Health Overview */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Общее состояние системы</CardTitle>
+                <CardDescription>
+                  Оценка здоровья: {getSystemHealthScore()}% | Последняя проверка: {new Date().toLocaleString('ru-RU')}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {systemIntegrity.map((component) => (
+                    <div key={component.id} className="p-4 border rounded-lg">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-sm">{component.component}</span>
+                        <Badge className={getSystemStatusColor(component.status)}>
+                          {component.status}
+                        </Badge>
+                      </div>
+                      <div className="space-y-2 text-xs text-gray-600">
+                        <div className="flex justify-between">
+                          <span>Uptime:</span>
+                          <span className="font-medium">{component.uptime}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>Производительность:</span>
+                          <span className="font-medium">{component.performance}%</span>
+                        </div>
+                        <Progress value={component.performance} className="h-1" />
+                        {component.issues.length > 0 && (
+                          <div className="text-red-600 text-xs">
+                            {component.issues.length} проблем
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Security Audits */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">История аудитов безопасности</h3>
+              {securityAudits.map((audit) => (
+                <Card key={audit.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Icon name="ShieldCheck" className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-lg">{audit.title}</CardTitle>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getAuditStatusColor(audit.status)}>
+                          {audit.status}
+                        </Badge>
+                        <Badge className={getSeverityColor(audit.severity)}>
+                          {audit.severity}
+                        </Badge>
+                        <Badge variant="outline" className="capitalize">
+                          {audit.type.replace('_', ' ')}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardDescription>
+                      Начат: {audit.startTime} {audit.endTime && `| Завершен: ${audit.endTime}`}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="text-center p-3 bg-red-50 rounded-lg">
+                        <div className="text-2xl font-bold text-red-600">{audit.findings.issues}</div>
+                        <div className="text-xs text-red-600">Проблемы</div>
+                      </div>
+                      <div className="text-center p-3 bg-yellow-50 rounded-lg">
+                        <div className="text-2xl font-bold text-yellow-600">{audit.findings.warnings}</div>
+                        <div className="text-xs text-yellow-600">Предупреждения</div>
+                      </div>
+                      <div className="text-center p-3 bg-green-50 rounded-lg">
+                        <div className="text-2xl font-bold text-green-600">{audit.findings.passed}</div>
+                        <div className="text-xs text-green-600">Пройдено</div>
+                      </div>
+                    </div>
+                    
+                    {audit.recommendations.length > 0 && (
+                      <div className="space-y-2">
+                        <span className="text-sm font-medium text-gray-600">Рекомендации:</span>
+                        <ul className="space-y-1">
+                          {audit.recommendations.map((rec, index) => (
+                            <li key={index} className="text-sm text-gray-700 flex items-start space-x-2">
+                              <Icon name="ArrowRight" className="h-3 w-3 mt-0.5 text-gray-400" />
+                              <span>{rec}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-end space-x-2 mt-4">
+                      <Button variant="outline" size="sm">
+                        <Icon name="Download" className="h-4 w-4 mr-2" />
+                        Скачать отчет
+                      </Button>
+                      {audit.status === 'completed' && (
+                        <Button variant="outline" size="sm">
+                          <Icon name="RefreshCw" className="h-4 w-4 mr-2" />
+                          Повторить аудит
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </TabsContent>
         </Tabs>
