@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import Icon from '@/components/ui/icon';
@@ -69,7 +72,72 @@ interface Integration {
   dataExchanged: number;
 }
 
+interface UserRole {
+  id: string;
+  name: string;
+  level: 'operator' | 'engineer' | 'manager' | 'admin';
+  permissions: string[];
+  dashboardConfig: {
+    widgets: string[];
+    alertLevel: 'all' | 'critical' | 'none';
+    dataAccess: string[];
+  };
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: UserRole;
+  isOnline: boolean;
+  lastActivity: string;
+}
+
+interface QuickAction {
+  id: string;
+  title: string;
+  description: string;
+  type: 'emergency' | 'maintenance' | 'report' | 'notification';
+  icon: string;
+  requiresConfirmation: boolean;
+  userLevels: string[];
+}
+
 const Index = () => {
+  const [activeTab, setActiveTab] = useState('monitoring');
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentUser, setCurrentUser] = useState<User>({
+    id: '1',
+    name: 'Александр Иванов',
+    email: 'a.ivanov@ht-systems.ru',
+    avatar: '/avatar-placeholder.jpg',
+    role: {
+      id: '1',
+      name: 'Главный инженер',
+      level: 'admin',
+      permissions: ['view_all', 'edit_all', 'manage_users', 'system_config'],
+      dashboardConfig: {
+        widgets: ['monitoring', 'alerts', 'analytics', 'reports'],
+        alertLevel: 'all',
+        dataAccess: ['all_sensors', 'all_departments', 'financial_data']
+      }
+    },
+    isOnline: true,
+    lastActivity: '2024-01-28 14:30:00'
+  });
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const [realTimeData, setRealTimeData] = useState<SensorData[]>([
     {
       id: '1',
@@ -267,6 +335,92 @@ const Index = () => {
     }
   ]);
 
+  const [userRoles] = useState<UserRole[]>([
+    {
+      id: '1',
+      name: 'Администратор',
+      level: 'admin',
+      permissions: ['view_all', 'edit_all', 'manage_users', 'system_config'],
+      dashboardConfig: {
+        widgets: ['monitoring', 'alerts', 'analytics', 'reports', 'ml', 'integrations'],
+        alertLevel: 'all',
+        dataAccess: ['all_sensors', 'all_departments', 'financial_data']
+      }
+    },
+    {
+      id: '2',
+      name: 'Главный инженер',
+      level: 'engineer',
+      permissions: ['view_all', 'edit_sensors', 'manage_alerts'],
+      dashboardConfig: {
+        widgets: ['monitoring', 'alerts', 'analytics'],
+        alertLevel: 'all',
+        dataAccess: ['all_sensors', 'technical_data']
+      }
+    },
+    {
+      id: '3',
+      name: 'Оператор',
+      level: 'operator',
+      permissions: ['view_monitoring', 'acknowledge_alerts'],
+      dashboardConfig: {
+        widgets: ['monitoring', 'alerts'],
+        alertLevel: 'critical',
+        dataAccess: ['assigned_sensors']
+      }
+    },
+    {
+      id: '4',
+      name: 'Руководитель',
+      level: 'manager',
+      permissions: ['view_reports', 'view_analytics'],
+      dashboardConfig: {
+        widgets: ['analytics', 'reports'],
+        alertLevel: 'critical',
+        dataAccess: ['summary_data', 'financial_data']
+      }
+    }
+  ]);
+
+  const [quickActions] = useState<QuickAction[]>([
+    {
+      id: '1',
+      title: 'Экстренная остановка',
+      description: 'Остановить все оборудование',
+      type: 'emergency',
+      icon: 'AlertTriangle',
+      requiresConfirmation: true,
+      userLevels: ['admin', 'engineer']
+    },
+    {
+      id: '2',
+      title: 'Оповещение персонала',
+      description: 'Отправить уведомление всем',
+      type: 'notification',
+      icon: 'Megaphone',
+      requiresConfirmation: true,
+      userLevels: ['admin', 'manager']
+    },
+    {
+      id: '3',
+      title: 'Создать отчет',
+      description: 'Генерация экстренного отчета',
+      type: 'report',
+      icon: 'FileText',
+      requiresConfirmation: false,
+      userLevels: ['admin', 'manager', 'engineer']
+    },
+    {
+      id: '4',
+      title: 'Запланировать ТО',
+      description: 'Создать задачу на обслуживание',
+      type: 'maintenance',
+      icon: 'Wrench',
+      requiresConfirmation: false,
+      userLevels: ['admin', 'engineer']
+    }
+  ]);
+
   // Симуляция обновления данных в реальном времени
   useEffect(() => {
     const interval = setInterval(() => {
@@ -332,6 +486,28 @@ const Index = () => {
     return 'text-red-600';
   };
 
+  const getActionColor = (type: string) => {
+    switch (type) {
+      case 'emergency': return 'bg-red-600 hover:bg-red-700 text-white';
+      case 'notification': return 'bg-blue-600 hover:bg-blue-700 text-white';
+      case 'report': return 'bg-green-600 hover:bg-green-700 text-white';
+      case 'maintenance': return 'bg-orange-600 hover:bg-orange-700 text-white';
+      default: return 'bg-gray-600 hover:bg-gray-700 text-white';
+    }
+  };
+
+  const hasPermission = (permission: string) => {
+    return currentUser.role.permissions.includes(permission) || currentUser.role.permissions.includes('view_all');
+  };
+
+  const canAccessWidget = (widget: string) => {
+    return currentUser.role.dashboardConfig.widgets.includes(widget);
+  };
+
+  const availableActions = quickActions.filter(action => 
+    action.userLevels.includes(currentUser.role.level)
+  );
+
   const activeAlerts = autoAlerts.filter(alert => alert.status === 'active').length;
   const criticalSensors = realTimeData.filter(sensor => sensor.status === 'critical').length;
   const averageCompliance = Math.round(reports.filter(r => r.compliance > 0).reduce((acc, r) => acc + r.compliance, 0) / reports.filter(r => r.compliance > 0).length);
@@ -340,40 +516,143 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3">
-              <Icon name="Activity" className="h-8 w-8 text-primary" />
-              <div>
-                <h1 className="text-xl font-semibold text-gray-900">
-                  АСУБТ - ht-systems.ru
-                </h1>
-                <p className="text-sm text-gray-500">
-                  Автоматическая система управления безопасностью труда
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">Система активна</span>
-              </div>
-              <Badge variant="outline" className="text-sm">
-                Администратор
-              </Badge>
-              <Button variant="outline" size="sm">
-                <Icon name="Settings" className="h-4 w-4 mr-2" />
-                Настройки
-              </Button>
+      {/* Mobile Header */}
+      {isMobile && (
+        <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-50">
+          <div className="flex items-center space-x-3">
+            <Avatar className="h-8 w-8">
+              <AvatarImage src={currentUser.avatar} />
+              <AvatarFallback>{currentUser.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+            </Avatar>
+            <div>
+              <div className="font-medium text-sm">{currentUser.name}</div>
+              <div className="text-xs text-gray-500">{currentUser.role.name}</div>
             </div>
           </div>
+          <div className="flex items-center space-x-2">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Icon name="Zap" className="h-4 w-4" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[80vh]">
+                <SheetHeader>
+                  <SheetTitle>Быстрые действия</SheetTitle>
+                  <SheetDescription>
+                    Оперативное управление системой
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="grid grid-cols-1 gap-4 mt-6">
+                  {availableActions.map((action) => (
+                    <Button
+                      key={action.id}
+                      className={`${getActionColor(action.type)} h-16 flex-col space-y-1`}
+                      onClick={() => {
+                        if (action.requiresConfirmation) {
+                          if (confirm(`Вы уверены, что хотите ${action.title.toLowerCase()}?`)) {
+                            console.log(`Выполняем ${action.title}`);
+                          }
+                        } else {
+                          console.log(`Выполняем ${action.title}`);
+                        }
+                      }}
+                    >
+                      <Icon name={action.icon as any} className="h-6 w-6" />
+                      <div className="text-center">
+                        <div className="font-medium">{action.title}</div>
+                        <div className="text-xs opacity-90">{action.description}</div>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Icon name="Menu" className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel>Меню</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Icon name="User" className="mr-2 h-4 w-4" />
+                  Профиль
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Icon name="Settings" className="mr-2 h-4 w-4" />
+                  Настройки
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Icon name="Shield" className="mr-2 h-4 w-4" />
+                  Безопасность
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Icon name="LogOut" className="mr-2 h-4 w-4" />
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </header>
+      )}
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className={`max-w-7xl mx-auto ${isMobile ? 'p-4' : 'p-6'}`}>
+        {/* Header */}
+        {!isMobile && (
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                АСУБТ - Автоматизированная система управления безопасностью труда
+              </h1>
+              <p className="text-lg text-gray-600">
+                Комплексный мониторинг и управление системами безопасности промышленного предприятия
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <div className="text-sm text-gray-500">Online: {currentUser.name}</div>
+                <div className="text-xs text-gray-400">{currentUser.role.name}</div>
+              </div>
+              <Avatar>
+                <AvatarImage src={currentUser.avatar} />
+                <AvatarFallback>{currentUser.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+              </Avatar>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    <Icon name="Menu" className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>Меню пользователя</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Icon name="User" className="mr-2 h-4 w-4" />
+                    Профиль
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Icon name="Settings" className="mr-2 h-4 w-4" />
+                    Настройки
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Icon name="Shield" className="mr-2 h-4 w-4" />
+                    Управление ролями
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Icon name="LogOut" className="mr-2 h-4 w-4" />
+                    Выйти
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        )}
+
         {/* Critical Alerts Banner */}
         {activeAlerts > 0 && (
           <Alert className="mb-6 border-red-200 bg-red-50">
@@ -469,33 +748,50 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* Main Tabs */}
         <Tabs defaultValue="monitoring" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="monitoring" className="flex items-center space-x-1">
-              <Icon name="Activity" className="h-4 w-4" />
-              <span className="hidden sm:inline">Мониторинг</span>
-            </TabsTrigger>
-            <TabsTrigger value="alerts" className="flex items-center space-x-1">
-              <Icon name="Bell" className="h-4 w-4" />
-              <span className="hidden sm:inline">Алерты</span>
-            </TabsTrigger>
-            <TabsTrigger value="notifications" className="flex items-center space-x-1">
-              <Icon name="MessageSquare" className="h-4 w-4" />
-              <span className="hidden sm:inline">Уведомления</span>
-            </TabsTrigger>
-            <TabsTrigger value="ml" className="flex items-center space-x-1">
-              <Icon name="Brain" className="h-4 w-4" />
-              <span className="hidden sm:inline">ML</span>
-            </TabsTrigger>
-            <TabsTrigger value="integrations" className="flex items-center space-x-1">
-              <Icon name="Plug" className="h-4 w-4" />
-              <span className="hidden sm:inline">Интеграции</span>
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center space-x-1">
-              <Icon name="BarChart3" className="h-4 w-4" />
-              <span className="hidden sm:inline">Аналитика</span>
-            </TabsTrigger>
+          <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-7'}`}>
+            {canAccessWidget('monitoring') && (
+              <TabsTrigger value="monitoring" className="flex items-center space-x-1">
+                <Icon name="Activity" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Мониторинг</span>
+              </TabsTrigger>
+            )}
+            {canAccessWidget('alerts') && (
+              <TabsTrigger value="alerts" className="flex items-center space-x-1">
+                <Icon name="Bell" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Алерты</span>
+              </TabsTrigger>
+            )}
+            {canAccessWidget('notifications') && hasPermission('manage_alerts') && (
+              <TabsTrigger value="notifications" className="flex items-center space-x-1">
+                <Icon name="MessageSquare" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Уведомления</span>
+              </TabsTrigger>
+            )}
+            {canAccessWidget('ml') && hasPermission('view_all') && (
+              <TabsTrigger value="ml" className="flex items-center space-x-1">
+                <Icon name="Brain" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>ML</span>
+              </TabsTrigger>
+            )}
+            {canAccessWidget('integrations') && hasPermission('system_config') && (
+              <TabsTrigger value="integrations" className="flex items-center space-x-1">
+                <Icon name="Plug" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Интеграции</span>
+              </TabsTrigger>
+            )}
+            {canAccessWidget('analytics') && (
+              <TabsTrigger value="analytics" className="flex items-center space-x-1">
+                <Icon name="BarChart3" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Аналитика</span>
+              </TabsTrigger>
+            )}
+            {hasPermission('manage_users') && (
+              <TabsTrigger value="roles" className="flex items-center space-x-1">
+                <Icon name="Users" className="h-4 w-4" />
+                <span className={isMobile ? "text-xs" : "hidden sm:inline"}>Роли</span>
+              </TabsTrigger>
+            )}
           </TabsList>
 
           {/* Real-time Monitoring */}
@@ -621,78 +917,6 @@ const Index = () => {
                           Подтвердить
                         </Button>
                       )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Auto Reports */}
-          <TabsContent value="reports" className="space-y-4">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">
-                Автогенерация отчетов
-              </h2>
-              <Button>
-                <Icon name="Plus" className="h-4 w-4 mr-2" />
-                Создать отчет
-              </Button>
-            </div>
-
-            <div className="grid gap-4">
-              {reports.map((report) => (
-                <Card key={report.id}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg">{report.title}</CardTitle>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant="outline" className="capitalize">
-                          {report.type}
-                        </Badge>
-                        <Badge className={
-                          report.status === 'ready' ? 'bg-green-100 text-green-800' :
-                          report.status === 'processing' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }>
-                          {report.status}
-                        </Badge>
-                      </div>
-                    </div>
-                    <CardDescription>
-                      Сгенерирован: {new Date(report.generatedAt).toLocaleString('ru-RU')}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        {report.compliance > 0 && (
-                          <div className="flex items-center space-x-2">
-                            <span className="text-sm text-gray-600">Соответствие:</span>
-                            <Progress value={report.compliance} className="w-20" />
-                            <span className="text-sm font-medium">{report.compliance}%</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex space-x-2">
-                        {report.status === 'ready' && (
-                          <>
-                            <Button variant="outline" size="sm">
-                              <Icon name="Eye" className="h-4 w-4 mr-2" />
-                              Просмотр
-                            </Button>
-                            <Button variant="outline" size="sm">
-                              <Icon name="Download" className="h-4 w-4 mr-2" />
-                              Скачать PDF
-                            </Button>
-                          </>
-                        )}
-                        {report.status === 'processing' && (
-                          <Badge variant="outline" className="animate-pulse">
-                            Обработка...
-                          </Badge>
-                        )}
-                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -909,6 +1133,79 @@ const Index = () => {
             </div>
           </TabsContent>
 
+          {/* User Roles */}
+          <TabsContent value="roles" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Управление ролями и доступом
+              </h2>
+              <Button>
+                <Icon name="Plus" className="h-4 w-4 mr-2" />
+                Создать роль
+              </Button>
+            </div>
+
+            <div className="grid gap-4">
+              {userRoles.map((role) => (
+                <Card key={role.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Icon name="Shield" className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-lg">{role.name}</CardTitle>
+                      </div>
+                      <Badge variant="outline" className="capitalize">
+                        {role.level}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Права доступа:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {role.permissions.map((permission, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {permission.replace('_', ' ')}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Доступные виджеты:</span>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {role.dashboardConfig.widgets.map((widget, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {widget}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Уровень алертов: </span>
+                          <Badge className={role.dashboardConfig.alertLevel === 'all' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'}>
+                            {role.dashboardConfig.alertLevel}
+                          </Badge>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Button variant="outline" size="sm">
+                            <Icon name="Edit" className="h-4 w-4 mr-2" />
+                            Редактировать
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Icon name="Users" className="h-4 w-4 mr-2" />
+                            Назначить пользователям
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
           {/* Analytics */}
           <TabsContent value="analytics" className="space-y-4">
             <h2 className="text-2xl font-bold text-gray-900">
@@ -978,7 +1275,7 @@ const Index = () => {
             </div>
           </TabsContent>
         </Tabs>
-      </main>
+      </div>
     </div>
   );
 };
