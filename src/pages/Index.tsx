@@ -37,6 +37,38 @@ interface ComplianceReport {
   compliance: number;
 }
 
+interface NotificationChannel {
+  id: string;
+  name: string;
+  type: 'telegram' | 'sms' | 'email' | 'webhook';
+  status: 'active' | 'inactive' | 'error';
+  lastUsed: string;
+  config: {
+    endpoint?: string;
+    recipients?: string[];
+    template?: string;
+  };
+}
+
+interface MLPrediction {
+  id: string;
+  type: 'incident_risk' | 'equipment_failure' | 'safety_trend';
+  confidence: number;
+  prediction: string;
+  timeframe: string;
+  factors: string[];
+  createdAt: string;
+}
+
+interface Integration {
+  id: string;
+  name: string;
+  type: '1c' | 'sap' | 'erp' | 'external_api';
+  status: 'connected' | 'disconnected' | 'syncing';
+  lastSync: string;
+  dataExchanged: number;
+}
+
 const Index = () => {
   const [realTimeData, setRealTimeData] = useState<SensorData[]>([
     {
@@ -134,6 +166,107 @@ const Index = () => {
     }
   ]);
 
+  const [notifications] = useState<NotificationChannel[]>([
+    {
+      id: '1',
+      name: 'Критические алерты Telegram',
+      type: 'telegram',
+      status: 'active',
+      lastUsed: '2024-01-28 14:23:15',
+      config: {
+        endpoint: '@safety_alerts_bot',
+        recipients: ['Администратор', 'Начальник охраны труда']
+      }
+    },
+    {
+      id: '2',
+      name: 'SMS экстренные уведомления',
+      type: 'sms',
+      status: 'active',
+      lastUsed: '2024-01-28 14:15:42',
+      config: {
+        recipients: ['+7 XXX XXX-XX-01', '+7 XXX XXX-XX-02']
+      }
+    },
+    {
+      id: '3',
+      name: 'Email отчеты',
+      type: 'email',
+      status: 'active',
+      lastUsed: '2024-01-28 09:00:00',
+      config: {
+        recipients: ['safety@ht-systems.ru', 'admin@ht-systems.ru']
+      }
+    },
+    {
+      id: '4',
+      name: 'Интеграция с 1С',
+      type: 'webhook',
+      status: 'inactive',
+      lastUsed: '2024-01-27 18:30:00',
+      config: {
+        endpoint: 'https://1c.ht-systems.ru/api/safety'
+      }
+    }
+  ]);
+
+  const [mlPredictions] = useState<MLPrediction[]>([
+    {
+      id: '1',
+      type: 'incident_risk',
+      confidence: 87,
+      prediction: 'Высокий риск травмы в цехе №2',
+      timeframe: 'Ближайшие 48 часов',
+      factors: ['Повышенный уровень шума', 'Нарушение графика обслуживания'],
+      createdAt: '2024-01-28 14:30:00'
+    },
+    {
+      id: '2',
+      type: 'equipment_failure',
+      confidence: 92,
+      prediction: 'Отказ системы вентиляции',
+      timeframe: 'Ближайшая неделя',
+      factors: ['Превышение рабочих часов', 'Отклонения в вибрации'],
+      createdAt: '2024-01-28 13:45:00'
+    },
+    {
+      id: '3',
+      type: 'safety_trend',
+      confidence: 78,
+      prediction: 'Ухудшение показателей безопасности',
+      timeframe: 'Следующий месяц',
+      factors: ['Увеличение нагрузки', 'Недостаточное обучение'],
+      createdAt: '2024-01-28 12:15:00'
+    }
+  ]);
+
+  const [integrations] = useState<Integration[]>([
+    {
+      id: '1',
+      name: '1С:Предприятие',
+      type: '1c',
+      status: 'connected',
+      lastSync: '2024-01-28 14:00:00',
+      dataExchanged: 1247
+    },
+    {
+      id: '2',
+      name: 'SAP ERP',
+      type: 'sap',
+      status: 'syncing',
+      lastSync: '2024-01-28 13:30:00',
+      dataExchanged: 892
+    },
+    {
+      id: '3',
+      name: 'Система контроля доступа',
+      type: 'external_api',
+      status: 'connected',
+      lastSync: '2024-01-28 14:25:00',
+      dataExchanged: 345
+    }
+  ]);
+
   // Симуляция обновления данных в реальном времени
   useEffect(() => {
     const interval = setInterval(() => {
@@ -175,9 +308,35 @@ const Index = () => {
     }
   };
 
+  const getNotificationStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'text-green-600 bg-green-100';
+      case 'inactive': return 'text-gray-600 bg-gray-100';
+      case 'error': return 'text-red-600 bg-red-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getIntegrationStatusColor = (status: string) => {
+    switch (status) {
+      case 'connected': return 'text-green-600 bg-green-100';
+      case 'disconnected': return 'text-red-600 bg-red-100';
+      case 'syncing': return 'text-blue-600 bg-blue-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 90) return 'text-green-600';
+    if (confidence >= 70) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
   const activeAlerts = autoAlerts.filter(alert => alert.status === 'active').length;
   const criticalSensors = realTimeData.filter(sensor => sensor.status === 'critical').length;
   const averageCompliance = Math.round(reports.filter(r => r.compliance > 0).reduce((acc, r) => acc + r.compliance, 0) / reports.filter(r => r.compliance > 0).length);
+  const activeNotifications = notifications.filter(n => n.status === 'active').length;
+  const connectedIntegrations = integrations.filter(i => i.status === 'connected').length;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -230,7 +389,7 @@ const Index = () => {
         )}
 
         {/* Dashboard Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Активные датчики</CardTitle>
@@ -238,48 +397,73 @@ const Index = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-primary">{realTimeData.length}</div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Все системы в сети
+              <p className="text-xs text-muted-foreground mt-1">
+                В сети
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Критические состояния</CardTitle>
+              <CardTitle className="text-sm font-medium">Критические</CardTitle>
               <Icon name="AlertCircle" className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-600">{criticalSensors}</div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Требуют вмешательства
+              <p className="text-xs text-muted-foreground mt-1">
+                Состояния
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Активные алерты</CardTitle>
+              <CardTitle className="text-sm font-medium">Алерты</CardTitle>
               <Icon name="Bell" className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-orange-600">{activeAlerts}</div>
-              <p className="text-xs text-muted-foreground mt-2">
-                Ожидают обработки
+              <p className="text-xs text-muted-foreground mt-1">
+                Активные
               </p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Соответствие нормам</CardTitle>
+              <CardTitle className="text-sm font-medium">Уведомления</CardTitle>
+              <Icon name="MessageSquare" className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">{activeNotifications}</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Каналов
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Интеграции</CardTitle>
+              <Icon name="Plug" className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-600">{connectedIntegrations}</div>
+              <p className="text-xs text-muted-foreground mt-1">
+                Подключено
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Соответствие</CardTitle>
               <Icon name="TrendingUp" className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">{averageCompliance}%</div>
-              <Progress value={averageCompliance} className="mt-2" />
-              <p className="text-xs text-muted-foreground mt-2">
-                Средний показатель
+              <p className="text-xs text-muted-foreground mt-1">
+                Нормам
               </p>
             </CardContent>
           </Card>
@@ -287,22 +471,30 @@ const Index = () => {
 
         {/* Main Tabs */}
         <Tabs defaultValue="monitoring" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="monitoring" className="flex items-center space-x-2">
+          <TabsList className="grid w-full grid-cols-6">
+            <TabsTrigger value="monitoring" className="flex items-center space-x-1">
               <Icon name="Activity" className="h-4 w-4" />
-              <span>Мониторинг</span>
+              <span className="hidden sm:inline">Мониторинг</span>
             </TabsTrigger>
-            <TabsTrigger value="alerts" className="flex items-center space-x-2">
+            <TabsTrigger value="alerts" className="flex items-center space-x-1">
               <Icon name="Bell" className="h-4 w-4" />
-              <span>Алерты</span>
+              <span className="hidden sm:inline">Алерты</span>
             </TabsTrigger>
-            <TabsTrigger value="reports" className="flex items-center space-x-2">
-              <Icon name="FileText" className="h-4 w-4" />
-              <span>Отчеты</span>
+            <TabsTrigger value="notifications" className="flex items-center space-x-1">
+              <Icon name="MessageSquare" className="h-4 w-4" />
+              <span className="hidden sm:inline">Уведомления</span>
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center space-x-2">
+            <TabsTrigger value="ml" className="flex items-center space-x-1">
+              <Icon name="Brain" className="h-4 w-4" />
+              <span className="hidden sm:inline">ML</span>
+            </TabsTrigger>
+            <TabsTrigger value="integrations" className="flex items-center space-x-1">
+              <Icon name="Plug" className="h-4 w-4" />
+              <span className="hidden sm:inline">Интеграции</span>
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center space-x-1">
               <Icon name="BarChart3" className="h-4 w-4" />
-              <span>Аналитика</span>
+              <span className="hidden sm:inline">Аналитика</span>
             </TabsTrigger>
           </TabsList>
 
@@ -500,6 +692,215 @@ const Index = () => {
                             Обработка...
                           </Badge>
                         )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* External Notifications */}
+          <TabsContent value="notifications" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Внешние уведомления
+              </h2>
+              <Button>
+                <Icon name="Plus" className="h-4 w-4 mr-2" />
+                Новый канал
+              </Button>
+            </div>
+
+            <div className="grid gap-4">
+              {notifications.map((channel) => (
+                <Card key={channel.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Icon name={
+                          channel.type === 'telegram' ? 'MessageCircle' :
+                          channel.type === 'sms' ? 'Phone' :
+                          channel.type === 'email' ? 'Mail' : 'Webhook'
+                        } className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-lg">{channel.name}</CardTitle>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getNotificationStatusColor(channel.status)}>
+                          {channel.status}
+                        </Badge>
+                        <Badge variant="outline" className="capitalize">
+                          {channel.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardDescription>
+                      Последнее использование: {channel.lastUsed}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {channel.config.recipients && (
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Получатели:</span>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {channel.config.recipients.map((recipient, index) => (
+                              <Badge key={index} variant="secondary" className="text-xs">
+                                {recipient}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {channel.config.endpoint && (
+                        <div>
+                          <span className="text-sm font-medium text-gray-600">Endpoint:</span>
+                          <code className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded">
+                            {channel.config.endpoint}
+                          </code>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex justify-end space-x-2 mt-4">
+                      <Button variant="outline" size="sm">
+                        <Icon name="Settings" className="h-4 w-4 mr-2" />
+                        Настроить
+                      </Button>
+                      <Button variant="outline" size="sm">
+                        <Icon name="Send" className="h-4 w-4 mr-2" />
+                        Тест
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Machine Learning Predictions */}
+          <TabsContent value="ml" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Машинное обучение и прогнозы
+              </h2>
+              <Button>
+                <Icon name="RefreshCw" className="h-4 w-4 mr-2" />
+                Обновить модель
+              </Button>
+            </div>
+
+            <div className="grid gap-4">
+              {mlPredictions.map((prediction) => (
+                <Card key={prediction.id} className="border-l-4 border-l-purple-500">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Icon name="Brain" className="h-5 w-5 text-purple-600" />
+                        <CardTitle className="text-lg">{prediction.prediction}</CardTitle>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge variant="outline" className="capitalize">
+                          {prediction.type.replace('_', ' ')}
+                        </Badge>
+                        <Badge className={`${getConfidenceColor(prediction.confidence)} bg-opacity-10`}>
+                          {prediction.confidence}% точность
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardDescription>
+                      Прогноз на: {prediction.timeframe} | Создан: {prediction.createdAt}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div>
+                        <span className="text-sm font-medium text-gray-600">Ключевые факторы:</span>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {prediction.factors.map((factor, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              {factor}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex justify-end space-x-2">
+                        <Button variant="outline" size="sm">
+                          <Icon name="TrendingUp" className="h-4 w-4 mr-2" />
+                          Детали анализа
+                        </Button>
+                        <Button size="sm">
+                          <Icon name="AlertTriangle" className="h-4 w-4 mr-2" />
+                          Создать задачу
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Integrations */}
+          <TabsContent value="integrations" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">
+                Интеграции с корпоративными системами
+              </h2>
+              <Button>
+                <Icon name="Plus" className="h-4 w-4 mr-2" />
+                Новая интеграция
+              </Button>
+            </div>
+
+            <div className="grid gap-4">
+              {integrations.map((integration) => (
+                <Card key={integration.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <Icon name={
+                          integration.type === '1c' ? 'Database' :
+                          integration.type === 'sap' ? 'Building' :
+                          integration.type === 'erp' ? 'Factory' : 'Globe'
+                        } className="h-5 w-5 text-primary" />
+                        <CardTitle className="text-lg">{integration.name}</CardTitle>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getIntegrationStatusColor(integration.status)}>
+                          {integration.status}
+                        </Badge>
+                        <Badge variant="outline" className="uppercase">
+                          {integration.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardDescription>
+                      Последняя синхронизация: {integration.lastSync}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-primary">{integration.dataExchanged}</div>
+                          <div className="text-xs text-gray-500">Записей обменяно</div>
+                        </div>
+                        {integration.status === 'syncing' && (
+                          <div className="flex items-center space-x-2">
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                            <span className="text-sm text-blue-600">Синхронизация...</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button variant="outline" size="sm">
+                          <Icon name="Settings" className="h-4 w-4 mr-2" />
+                          Настроить
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Icon name="RefreshCw" className="h-4 w-4 mr-2" />
+                          Синхронизировать
+                        </Button>
                       </div>
                     </div>
                   </CardContent>
