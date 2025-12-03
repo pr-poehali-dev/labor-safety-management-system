@@ -11,6 +11,7 @@ import AdminPanel from "./pages/AdminPanel";
 import SuperAdminPanel from "./pages/SuperAdminPanel";
 import DocumentsManager from "./pages/DocumentsManager";
 import EventsManager from "./pages/EventsManager";
+import ReportsPage from "./pages/ReportsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -74,6 +75,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <EventsManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <ProtectedRoute>
+                  <ReportsPage />
                 </ProtectedRoute>
               }
             />

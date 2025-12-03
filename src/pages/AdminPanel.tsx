@@ -247,13 +247,17 @@ const AdminPanel = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/reports')}
+                >
+                  <Icon name="FileDown" size={18} className="mr-2" />
+                  Формирование отчётов
+                </Button>
                 <Button className="w-full justify-start" variant="outline">
                   <Icon name="BarChart" size={18} className="mr-2" />
                   Статистика
-                </Button>
-                <Button className="w-full justify-start" variant="outline">
-                  <Icon name="FileDown" size={18} className="mr-2" />
-                  Экспорт отчетов
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
                   <Icon name="TrendingUp" size={18} className="mr-2" />

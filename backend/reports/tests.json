@@ -1,0 +1,30 @@
+{
+  "tests": [
+    {
+      "name": "Get summary report",
+      "method": "GET",
+      "path": "/?type=summary",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "type": "summary",
+        "statistics": "object"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Generate PDF report",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "type": "form7",
+        "format": "pdf"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "report": "object"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
