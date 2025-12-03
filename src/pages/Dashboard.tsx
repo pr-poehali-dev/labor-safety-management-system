@@ -350,6 +350,63 @@ const Dashboard = () => {
                   </div>
                 </div>
               </button>
+
+              <button
+                onClick={() => navigate('/admin/otipb')}
+                className="group relative h-32 bg-gradient-to-br from-slate-500 to-slate-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(100, 116, 139, 0.3)',
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="ShieldCheck" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Отдел ОТиПБ</div>
+                    <div className="text-sm text-slate-100">Охрана труда и промбезопасность</div>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => navigate('/admin/ecology')}
+                className="group relative h-32 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(16, 185, 129, 0.3)',
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="Sprout" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Экология</div>
+                    <div className="text-sm text-emerald-100">Экологический контроль</div>
+                  </div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => navigate('/admin/pab')}
+                className="group relative h-32 bg-gradient-to-br from-rose-500 to-rose-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(244, 63, 94, 0.3)',
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="Flame" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">ПАБ</div>
+                    <div className="text-sm text-rose-100">Пожарная и аварийная безопасность</div>
+                  </div>
+                </div>
+              </button>
             </div>
 
             <div className="mt-8 pt-8 border-t">

@@ -19,6 +19,9 @@ import SizManager from "./pages/SizManager";
 import MedicalManager from "./pages/MedicalManager";
 import IncidentsManager from "./pages/IncidentsManager";
 import ControlManager from "./pages/ControlManager";
+import OtipbDepartment from "./pages/OtipbDepartment";
+import EcologyDepartment from "./pages/EcologyDepartment";
+import PabDepartment from "./pages/PabDepartment";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -146,6 +149,30 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ControlManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/otipb"
+              element={
+                <ProtectedRoute>
+                  <OtipbDepartment />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/ecology"
+              element={
+                <ProtectedRoute>
+                  <EcologyDepartment />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/pab"
+              element={
+                <ProtectedRoute>
+                  <PabDepartment />
                 </ProtectedRoute>
               }
             />
