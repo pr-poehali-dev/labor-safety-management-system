@@ -11,6 +11,7 @@ import AdminPanel from "./pages/AdminPanel";
 import SuperAdminPanel from "./pages/SuperAdminPanel";
 import DocumentsManager from "./pages/DocumentsManager";
 import EventsManager from "./pages/EventsManager";
+import EventsCalendar from "./pages/EventsCalendar";
 import ReportsPage from "./pages/ReportsPage";
 import NotFound from "./pages/NotFound";
 
@@ -75,6 +76,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <EventsManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/calendar"
+              element={
+                <ProtectedRoute>
+                  <EventsCalendar />
                 </ProtectedRoute>
               }
             />

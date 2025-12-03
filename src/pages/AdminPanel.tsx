@@ -115,7 +115,7 @@ const AdminPanel = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           <Card>
             <CardHeader>
               <CardTitle>Управление пользователями</CardTitle>
@@ -165,52 +165,129 @@ const AdminPanel = () => {
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Мероприятия и отчёты</CardTitle>
+              <CardDescription>Планирование и аналитика</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/calendar')}
+                >
+                  <Icon name="CalendarDays" size={18} className="mr-2" />
+                  Календарь мероприятий
+                </Button>
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/events')}
+                >
+                  <Icon name="List" size={18} className="mr-2" />
+                  Список мероприятий
+                </Button>
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/reports')}
+                >
+                  <Icon name="FileBarChart" size={18} className="mr-2" />
+                  Отчёты
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Последние действия пользователей</CardTitle>
-            <CardDescription>Аудит активности в системе</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Пользователь</TableHead>
-                  <TableHead>Действие</TableHead>
-                  <TableHead>Дата и время</TableHead>
-                  <TableHead>Статус</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">Иванов И.И.</TableCell>
-                  <TableCell>Вход в систему</TableCell>
-                  <TableCell>03.12.2025 14:30</TableCell>
-                  <TableCell>
-                    <Badge variant="default">Успешно</Badge>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Петрова А.С.</TableCell>
-                  <TableCell>Добавлен документ</TableCell>
-                  <TableCell>03.12.2025 13:15</TableCell>
-                  <TableCell>
-                    <Badge variant="default">Успешно</Badge>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Сидоров П.Н.</TableCell>
-                  <TableCell>Создание мероприятия</TableCell>
-                  <TableCell>03.12.2025 11:45</TableCell>
-                  <TableCell>
-                    <Badge variant="default">Успешно</Badge>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Последние действия пользователей</CardTitle>
+              <CardDescription>Аудит активности в системе</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Пользователь</TableHead>
+                    <TableHead>Действие</TableHead>
+                    <TableHead>Статус</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="font-medium">Иванов И.И.</TableCell>
+                    <TableCell>Вход в систему</TableCell>
+                    <TableCell>
+                      <Badge variant="default">Успешно</Badge>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">Петрова А.С.</TableCell>
+                    <TableCell>Добавлен документ</TableCell>
+                    <TableCell>
+                      <Badge variant="default">Успешно</Badge>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="font-medium">Сидоров П.Н.</TableCell>
+                    <TableCell>Создание мероприятия</TableCell>
+                    <TableCell>
+                      <Badge variant="default">Успешно</Badge>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Icon name="Bell" size={20} className="text-yellow-600" />
+                Напоминания (7 дней)
+              </CardTitle>
+              <CardDescription>Предстоящие мероприятия</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <Icon name="Calendar" size={18} className="text-yellow-600 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Проверка СИЗ</p>
+                    <p className="text-xs text-gray-500">Завтра, 04.12.2025</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <Icon name="Calendar" size={18} className="text-yellow-600 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Инструктаж по ОТ</p>
+                    <p className="text-xs text-gray-500">Через 3 дня, 06.12.2025</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                  <Icon name="Calendar" size={18} className="text-yellow-600 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Медосмотр сотрудников</p>
+                    <p className="text-xs text-gray-500">Через 5 дней, 08.12.2025</p>
+                  </div>
+                </div>
+                <Button 
+                  className="w-full" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => navigate('/admin/calendar')}
+                >
+                  <Icon name="CalendarDays" size={16} className="mr-2" />
+                  Открыть календарь
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
           <Card>
