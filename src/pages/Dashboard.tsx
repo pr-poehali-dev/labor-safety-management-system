@@ -179,126 +179,177 @@ const Dashboard = () => {
           <div className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-3xl font-bold text-blue-700 mb-6">Модули системы</h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <button
                 onClick={() => navigate('/admin/documents')}
+                className="group relative h-32 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(59, 130, 246, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="FileText" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Управление документацией</div>
-                    <div className="text-xs text-gray-600">Электронный архив документов</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="FileText" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Управление документацией</div>
+                    <div className="text-sm text-blue-100">Электронный архив</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/training')}
+                className="group relative h-32 bg-gradient-to-br from-green-500 to-green-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(34, 197, 94, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="GraduationCap" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Обучение и инструктажи</div>
-                    <div className="text-xs text-gray-600">Планирование и контроль обучения</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="GraduationCap" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Обучение и инструктажи</div>
+                    <div className="text-sm text-green-100">Контроль обучения</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/sout')}
+                className="group relative h-32 bg-gradient-to-br from-purple-500 to-purple-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(168, 85, 247, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="ClipboardCheck" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">СОУТ</div>
-                    <div className="text-xs text-gray-600">Специальная оценка условий труда</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="ClipboardCheck" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">СОУТ</div>
+                    <div className="text-sm text-purple-100">Оценка условий труда</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/siz')}
+                className="group relative h-32 bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(249, 115, 22, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="HardHat" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Средства защиты (СИЗ)</div>
-                    <div className="text-xs text-gray-600">Учет и выдача СИЗ</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="HardHat" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Средства защиты (СИЗ)</div>
+                    <div className="text-sm text-orange-100">Учет и выдача</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/medical')}
+                className="group relative h-32 bg-gradient-to-br from-red-500 to-red-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(239, 68, 68, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="Stethoscope" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Медицинские осмотры</div>
-                    <div className="text-xs text-gray-600">Планирование медосмотров</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="Stethoscope" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Медицинские осмотры</div>
+                    <div className="text-sm text-red-100">Планирование медосмотров</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
-                onClick={() => navigate('/admin/events')}
+              <button
+                onClick={() => navigate('/admin/calendar')}
+                className="group relative h-32 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(6, 182, 212, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="CalendarDays" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Календарь мероприятий</div>
-                    <div className="text-xs text-gray-600">Планирование и контроль</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="CalendarDays" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Календарь мероприятий</div>
+                    <div className="text-sm text-cyan-100">Планирование и контроль</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
                 onClick={() => navigate('/admin/reports')}
+                className="group relative h-32 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(99, 102, 241, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="FileBarChart" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Отчетность</div>
-                    <div className="text-xs text-gray-600">Формирование отчетов</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="FileBarChart" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Отчетность</div>
+                    <div className="text-sm text-indigo-100">Формирование отчетов</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/incidents')}
+                className="group relative h-32 bg-gradient-to-br from-yellow-500 to-yellow-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(234, 179, 8, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="AlertTriangle" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Учет происшествий</div>
-                    <div className="text-xs text-gray-600">Регистрация и расследование</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="AlertTriangle" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Учет происшествий</div>
+                    <div className="text-sm text-yellow-100">Регистрация и расследование</div>
                   </div>
                 </div>
-              </Button>
+              </button>
 
-              <Button 
-                variant="outline" 
-                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              <button
+                onClick={() => navigate('/admin/control')}
+                className="group relative h-32 bg-gradient-to-br from-teal-500 to-teal-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+                style={{
+                  boxShadow: '0 10px 25px rgba(20, 184, 166, 0.3)',
+                }}
               >
-                <div className="flex items-start gap-3">
-                  <Icon name="Search" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <div className="font-semibold text-base mb-1">Контроль требований</div>
-                    <div className="text-xs text-gray-600">Проверки и предписания</div>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative h-full flex items-center gap-4 p-6 text-white">
+                  <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <Icon name="Search" size={28} className="text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg mb-1">Контроль требований</div>
+                    <div className="text-sm text-teal-100">Проверки и предписания</div>
                   </div>
                 </div>
-              </Button>
+              </button>
             </div>
 
             <div className="mt-8 pt-8 border-t">

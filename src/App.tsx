@@ -13,6 +13,12 @@ import DocumentsManager from "./pages/DocumentsManager";
 import EventsManager from "./pages/EventsManager";
 import EventsCalendar from "./pages/EventsCalendar";
 import ReportsPage from "./pages/ReportsPage";
+import TrainingManager from "./pages/TrainingManager";
+import SoutManager from "./pages/SoutManager";
+import SizManager from "./pages/SizManager";
+import MedicalManager from "./pages/MedicalManager";
+import IncidentsManager from "./pages/IncidentsManager";
+import ControlManager from "./pages/ControlManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -92,6 +98,54 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ReportsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/training"
+              element={
+                <ProtectedRoute>
+                  <TrainingManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/sout"
+              element={
+                <ProtectedRoute>
+                  <SoutManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/siz"
+              element={
+                <ProtectedRoute>
+                  <SizManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/medical"
+              element={
+                <ProtectedRoute>
+                  <MedicalManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/incidents"
+              element={
+                <ProtectedRoute>
+                  <IncidentsManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/control"
+              element={
+                <ProtectedRoute>
+                  <ControlManager />
                 </ProtectedRoute>
               }
             />
