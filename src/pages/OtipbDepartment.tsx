@@ -129,6 +129,102 @@ const OtipbDepartment = () => {
               </div>
             </div>
           </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-red-500 to-red-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(239, 68, 68, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="Flame" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Пожарная безопасность</div>
+                <div className="text-sm text-red-100">Контроль и профилактика</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(249, 115, 22, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="Shield" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Система пожаротушения</div>
+                <div className="text-sm text-orange-100">Техническое обслуживание</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-amber-500 to-amber-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(245, 158, 11, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="AlertTriangle" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Аварийные ситуации</div>
+                <div className="text-sm text-amber-100">Планы ликвидации</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-pink-500 to-pink-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(236, 72, 153, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="GraduationCap" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Обучение ПТМ</div>
+                <div className="text-sm text-pink-100">Пожарно-технический минимум</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-violet-500 to-violet-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(139, 92, 246, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="ClipboardList" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Проверки и учения</div>
+                <div className="text-sm text-violet-100">График мероприятий</div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            className="group relative h-32 bg-gradient-to-br from-rose-500 to-rose-700 rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+            style={{ boxShadow: '0 10px 25px rgba(244, 63, 94, 0.3)' }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="relative h-full flex items-center gap-4 p-6 text-white">
+              <div className="flex-shrink-0 w-14 h-14 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                <Icon name="FileText" size={28} className="text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-bold text-lg mb-1">Документация ПБ</div>
+                <div className="text-sm text-rose-100">Инструкции и приказы</div>
+              </div>
+            </div>
+          </button>
         </div>
 
         <Card>
