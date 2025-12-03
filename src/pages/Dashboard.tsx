@@ -179,45 +179,170 @@ const Dashboard = () => {
           <div className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-3xl font-bold text-blue-700 mb-6">Модули системы</h2>
 
-            <div className="space-y-6">
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">Модуль управления документацией</h3>
-                <p className="text-gray-700">
-                  Обеспечивает создание, хранение, актуализацию и распространение документов по охране труда. Поддерживает
-                  версионность документов и разграничение прав доступа.
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+                onClick={() => navigate('/admin/documents')}
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="FileText" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Управление документацией</div>
+                    <div className="text-xs text-gray-600">Электронный архив документов</div>
+                  </div>
+                </div>
+              </Button>
 
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">Модуль обучения и инструктажей</h3>
-                <p className="text-gray-700">
-                  Позволяет вести учет работников, подлежащих обучению и проверке знаний требований охраны труда, планировать и
-                  контролировать проведение инструктажей, формировать программы обучения.
-                </p>
-              </div>
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="GraduationCap" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Обучение и инструктажи</div>
+                    <div className="text-xs text-gray-600">Планирование и контроль обучения</div>
+                  </div>
+                </div>
+              </Button>
 
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">Модуль специальной оценки условий труда</h3>
-                <p className="text-gray-700">
-                  Обеспечивает ведение базы данных результатов специальной оценки условий труда, формирование перечней рабочих мест,
-                  подлежащих специальной оценке, контроль выполнения ее результатов.
-                </p>
-              </div>
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="ClipboardCheck" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">СОУТ</div>
+                    <div className="text-xs text-gray-600">Специальная оценка условий труда</div>
+                  </div>
+                </div>
+              </Button>
 
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">Модуль средств индивидуальной защиты</h3>
-                <p className="text-gray-700">
-                  Позволяет вести учет выдачи средств индивидуальной защиты, норм бесплатной выдачи СИЗ, контролировать
-                  своевременность замены и обслуживания СИЗ.
-                </p>
-              </div>
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="HardHat" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Средства защиты (СИЗ)</div>
+                    <div className="text-xs text-gray-600">Учет и выдача СИЗ</div>
+                  </div>
+                </div>
+              </Button>
 
-              <div className="border-l-4 border-blue-500 pl-6">
-                <h3 className="text-xl font-semibold text-blue-600 mb-2">Модуль медицинских осмотров</h3>
-                <p className="text-gray-700">
-                  Обеспечивает планирование и контроль проведения обязательных предварительных и периодических медицинских
-                  осмотров работников, ведение соответствующих журналов и отчетов.
-                </p>
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="Stethoscope" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Медицинские осмотры</div>
+                    <div className="text-xs text-gray-600">Планирование медосмотров</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+                onClick={() => navigate('/admin/events')}
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="CalendarDays" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Календарь мероприятий</div>
+                    <div className="text-xs text-gray-600">Планирование и контроль</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+                onClick={() => navigate('/admin/reports')}
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="FileBarChart" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Отчетность</div>
+                    <div className="text-xs text-gray-600">Формирование отчетов</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="AlertTriangle" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Учет происшествий</div>
+                    <div className="text-xs text-gray-600">Регистрация и расследование</div>
+                  </div>
+                </div>
+              </Button>
+
+              <Button 
+                variant="outline" 
+                className="h-24 text-left justify-start p-4 hover:bg-blue-50 hover:border-blue-500 transition-colors"
+              >
+                <div className="flex items-start gap-3">
+                  <Icon name="Search" size={24} className="text-blue-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <div className="font-semibold text-base mb-1">Контроль требований</div>
+                    <div className="text-xs text-gray-600">Проверки и предписания</div>
+                  </div>
+                </div>
+              </Button>
+            </div>
+
+            <div className="mt-8 pt-8 border-t">
+              <h3 className="text-xl font-bold text-blue-700 mb-4">Подробное описание модулей</h3>
+              <div className="space-y-6">
+                <div className="border-l-4 border-blue-500 pl-6">
+                  <h4 className="text-lg font-semibold text-blue-600 mb-2">Модуль управления документацией</h4>
+                  <p className="text-gray-700">
+                    Обеспечивает создание, хранение, актуализацию и распространение документов по охране труда. Поддерживает
+                    версионность документов и разграничение прав доступа.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-6">
+                  <h4 className="text-lg font-semibold text-blue-600 mb-2">Модуль обучения и инструктажей</h4>
+                  <p className="text-gray-700">
+                    Позволяет вести учет работников, подлежащих обучению и проверке знаний требований охраны труда, планировать и
+                    контролировать проведение инструктажей, формировать программы обучения.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-6">
+                  <h4 className="text-lg font-semibold text-blue-600 mb-2">Модуль специальной оценки условий труда</h4>
+                  <p className="text-gray-700">
+                    Обеспечивает ведение базы данных результатов специальной оценки условий труда, формирование перечней рабочих мест,
+                    подлежащих специальной оценке, контроль выполнения ее результатов.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-6">
+                  <h4 className="text-lg font-semibold text-blue-600 mb-2">Модуль средств индивидуальной защиты</h4>
+                  <p className="text-gray-700">
+                    Позволяет вести учет выдачи средств индивидуальной защиты, норм бесплатной выдачи СИЗ, контролировать
+                    своевременность замены и обслуживания СИЗ.
+                  </p>
+                </div>
+
+                <div className="border-l-4 border-blue-500 pl-6">
+                  <h4 className="text-lg font-semibold text-blue-600 mb-2">Модуль медицинских осмотров</h4>
+                  <p className="text-gray-700">
+                    Обеспечивает планирование и контроль проведения обязательных предварительных и периодических медицинских
+                    осмотров работников, ведение соответствующих журналов и отчетов.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
