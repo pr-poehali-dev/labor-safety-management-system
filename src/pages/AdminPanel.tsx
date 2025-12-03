@@ -146,9 +146,13 @@ const AdminPanel = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/documents')}
+                >
                   <Icon name="Upload" size={18} className="mr-2" />
-                  Загрузить документ
+                  Управление документами
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
                   <Icon name="FolderOpen" size={18} className="mr-2" />
@@ -216,9 +220,13 @@ const AdminPanel = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <Button className="w-full justify-start" variant="outline">
+                <Button 
+                  className="w-full justify-start" 
+                  variant="outline"
+                  onClick={() => navigate('/admin/events')}
+                >
                   <Icon name="CalendarPlus" size={18} className="mr-2" />
-                  Создать мероприятие
+                  Управление мероприятиями
                 </Button>
                 <Button className="w-full justify-start" variant="outline">
                   <Icon name="ListChecks" size={18} className="mr-2" />

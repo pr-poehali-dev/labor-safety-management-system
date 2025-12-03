@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import AdminPanel from "./pages/AdminPanel";
 import SuperAdminPanel from "./pages/SuperAdminPanel";
+import DocumentsManager from "./pages/DocumentsManager";
+import EventsManager from "./pages/EventsManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +58,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <SuperAdminPanel />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/documents"
+              element={
+                <ProtectedRoute>
+                  <DocumentsManager />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/events"
+              element={
+                <ProtectedRoute>
+                  <EventsManager />
                 </ProtectedRoute>
               }
             />

@@ -1,0 +1,35 @@
+{
+  "tests": [
+    {
+      "name": "Get all events",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "events": "array"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Create new event",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "title": "Инструктаж по ОТ",
+        "description": "Вводный инструктаж для новых сотрудников",
+        "event_type": "training",
+        "responsible_user_id": 1,
+        "planned_date": "2025-12-10"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "event": {
+          "id": "number",
+          "title": "string"
+        }
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
